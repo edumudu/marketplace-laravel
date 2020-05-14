@@ -1,9 +1,14 @@
-
 @extends('layouts.front')
 
 @section('content')
   <div class="row mb-4">
-    @foreach($products as $key => $product)
+    <div class="col-12">
+      <h2 class="text-capitalize">{{ $category->name }}</h2>
+
+      <hr>
+    </div>
+
+    @forelse($category->products as $key => $product)
       <div class="col-12 col-md-4">
         <div class="card">
           @if($product->photos->count())
@@ -11,12 +16,12 @@
           @else
             <img src="{{ asset('assets/images/no-photo.jpg') }}" alt="" class="card-img-top">
           @endif
-  
+
           <div class="card-body">
             <h2 class="card-title">
               {{ $product->name }}
             </h2>
-  
+
             <p class="card-text">
               {{ $product->description }}
             </p>
@@ -36,35 +41,13 @@
         </div>
         <div class="row mb-4">
       @endif
-    @endforeach
-  </div>
+      
+    @empty
 
-  <div class="row">
-    <div class="col-12">
-      <h2>Lojas em destaque</h2>
+      <div class="col-12">
+        <h3 class="alert alert-warning">Nenhum produto encontrado para esta categoria.</h3>
+      </div>
 
-      <hr>
-    </div>
-    @foreach($stores as $store)
-    <div class="col-md-4">
-      @if($store->logo)
-        <img src="{{ asset('storage/' . $store->logo) }}" alt="Logo da loja {{ $store->name }}" class="img-fluid">
-      @else
-        <img src="https://via.placeholder.com/1280X720.png?text=logo" class="img-fluid">
-      @endif
-
-      <h3>
-        {{ $store->name }}
-      </h3>
-
-      <p>
-        {{ $store->description }}
-      </p>
-
-      <a href="{{ route('store.single', ['slug' => $store->slug]) }}" class="btn btn-sm btn-success">
-        ver Loja
-      </a>
-    </div>
-    @endforeach
+    @endforelse
   </div>
 @endsection
