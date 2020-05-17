@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\UserRegisteredEmail;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -69,5 +72,18 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    protected function registered(Request $request, $user)
+    {
+        Mail::to($user->email)->send(new UserRegisteredEmail($user));
+
+        if($user->role == 'ROLE_OWNER')
+          return redirect()->route('admin.stores.index');
+
+        if($user->role == 'ROLE_USER' && session()->has('cart'))
+          return redirect()->route('checkout.index');
+
+        return null;
     }
 }
