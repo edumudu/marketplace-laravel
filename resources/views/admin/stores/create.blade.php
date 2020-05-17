@@ -68,3 +68,14 @@
     </div>
   </form>
 @endsection
+
+@section('scripts')
+  <script>
+    const imPhone = new Inputmask('(99) 9999-9999');
+    const imPhoneMobile = new Inputmask('(99) 99999-9999');
+
+    imPhone.mask(document.querySelector('[name=phone]'));
+    imPhoneMobile.mask(document.querySelector('[name=mobile_phone]'));
+    
+  </script>
+@endsection

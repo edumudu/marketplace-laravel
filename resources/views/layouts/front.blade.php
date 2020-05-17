@@ -46,6 +46,16 @@
                 Meus pedidos
               </a>
             </li>
+            
+            <li class="nav-item">
+              <a class="nav-link text-capitalize" onclick="event.preventDefault(); document.querySelector('form.logout').submit()" href="#">
+                sair
+              </a>
+
+              <form action="{{ route('logout') }}" method="POST" class="logout d-none">
+                @csrf
+              </form>
+            </li>
 
           @endauth
 

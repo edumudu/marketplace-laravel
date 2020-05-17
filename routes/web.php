@@ -27,12 +27,14 @@ Route::prefix('checkout')->name('checkout.')->group(function(){
   Route::get('/', 'CheckoutController@index')->name('index');
   Route::post('/process', 'CheckoutController@process')->name('process');
   Route::get('/thanks', 'CheckoutController@thanks')->name('thanks');
+
+  Route::post('/notification', 'CheckoutController@notification')->name('notification');
 });
 
 Route::middleware('auth')->group(function() {
   Route::get('/my-orders', 'UserOrderController@index')->name('user.orders');
   
-  Route::prefix('admin')->namespace('Admin')->name('admin.')->group(function() {
+  Route::prefix('admin')->namespace('Admin')->name('admin.')->middleware('access.control.store.admin')->group(function() {
     Route::resource('stores', 'StoreController');
     Route::resource('products', 'ProductController');
     Route::resource('categories', 'CategoryController');
